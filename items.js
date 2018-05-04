@@ -64,7 +64,7 @@ function ItemDAO(database) {
             ]).toArray(function(err, result) {
                 var categories = [];
                 var category = {
-                    _id: "At",
+                    _id: "All",
                     num: 9999
                 };
 
@@ -105,6 +105,7 @@ function ItemDAO(database) {
          * Create a query on the "item" collection to select only the items
          * that should be displayed for a particular page of a given category.
          * The category is passed as a parameter to getItems().
+         * 
          *
          * Use sort(), skip(), and limit() and the method parameters: page and
          * itemsPerPage to identify the appropriate products to display on each
@@ -118,6 +119,33 @@ function ItemDAO(database) {
          * than you do for other categories.
          *
          */
+
+        console.log("Inside getItems() -- Category: " + category);
+        console.log('page:' + page);
+        console.log('itemsPerPage:' + itemsPerPage);
+        if(category === "All"){
+            console.log('All is selected');
+        }
+        else{
+            console.log('Category is : ' + category)
+            this.db.collection('item').find(
+                {"category": category}
+            ).skip(0)
+            .limit(itemsPerPage)
+            .toArray(function(err, result) {
+                assert.equal(err, null);
+
+                for(var i=0; i<result.length; i++) {
+                    console.log("\n"+ result[i]._id + ", " + result[i].title + ", " + result[i].category)
+                }
+            })
+        }
+
+
+
+         
+
+         
 
         var pageItem = this.createDummyItem();
         var pageItems = [];
